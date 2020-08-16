@@ -4,7 +4,6 @@ const axios = require('axios').default;
 const path = require('path');
 
 const urlList = JSON.parse(contentUrls);
-console.log(urlList[0]);
 
 const fetchedDocPath = (path.join(__dirname, "..", "/fetchedPages"));
 

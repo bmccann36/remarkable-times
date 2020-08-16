@@ -33,6 +33,17 @@ const defaultPDFContent = {
   transform: {},
 };
 
+const defaultEPUBContent = {
+  extraMetadata: {},
+  fileType: "epub",
+  lastOpenedPage: 0,
+  lineHeight: -1,
+  margins: 100,
+  pageCount: 0,
+  textScale: 1,
+  transform: {},
+};
+
 const defaultPDFmetadata = {
   deleted: false,
   lastModified: new Date().toISOString(),
@@ -240,7 +251,12 @@ export default class Remarkable {
     });
   }
 
-  public async uploadZip(name: string, ID: string, zipFile: Buffer) {
+  public async uploadZip(
+    name: string,
+    ID: string,
+    zipFile: Buffer,
+    parent?: string,
+  ) {
     if (!this.token) throw Error("You need to call refreshToken() first");
 
     const url = `${await this.getStorageUrl()}/document-storage/json/2/upload/request`;
@@ -259,6 +275,7 @@ export default class Remarkable {
       },
     );
     if (!body[0].Success || !body[0].BlobURLPut) {
+      console.log(body);
       throw new Error("Error during the creation of the upload request");
     }
 
@@ -276,6 +293,12 @@ export default class Remarkable {
       throw new Error("Error during the upload of the document");
     }
 
+    // set metadata properties of the doc to create
+    const docMetaData = Object.assign({}, defaultPDFmetadata);
+    if (parent) {
+      docMetaData.parent = parent;
+    }
+
     // Then we update the metadata
     const {
       body: bodyUpdateStatus,
@@ -284,7 +307,7 @@ export default class Remarkable {
       {
         json: [
           {
-            ...defaultPDFmetadata,
+            ...docMetaData,
             ID,
             VissibleName: name,
             lastModified: new Date().toISOString(),
@@ -316,6 +339,26 @@ export default class Remarkable {
 
     this.zip = new JSZip();
     return ID;
+  }
+
+  public async uploadEPUB(
+    name: string,
+    id: string,
+    file: Buffer,
+    parent?: string,
+  ) {
+    if (!this.token) throw Error("You need to call refreshToken() first");
+
+    // We create the zip file to get uploaded
+    this.zip.file(`${id}.content`, JSON.stringify(defaultEPUBContent));
+    this.zip.file(`${id}.pagedata`, []);
+    this.zip.file(`${id}.epub`, file);
+    const zipContent = await this.zip.generateAsync({ type: "nodebuffer" });
+
+    await this.uploadZip(name, id, zipContent, parent);
+
+    this.zip = new JSZip();
+    return id;
   }
 
   public async createDirectory(name: string, ID: string, parent?: string) {
