@@ -1,18 +1,26 @@
-const fs = require('fs')
-const contentUrls = fs.readFileSync('./newsletterList.json', 'utf8')
-const axios = require('axios').default;
-const path = require('path');
+const fs = require("fs");
+const contentUrls = fs.readFileSync("./newsletterList.json", "utf8");
+const axios = require("axios").default;
+const path = require("path");
 
 const urlList = JSON.parse(contentUrls);
 
-const fetchedDocPath = (path.join(__dirname, "..", "/fetchedPages"));
+module.exports = function () {
+  const pendingPages = urlList.map((nlData) => {
+    return axios.get(nlData.url).then((res) => {
+      return {
+        newsLetterName: nlData.name,
+        html: res.data,
+      };
+    });
+  });
+  return Promise.all(pendingPages);
+};
 
-urlList.map((nlData) => {
-  axios.get(nlData.url).then((res) => {
-    fs.writeFileSync(`${fetchedDocPath}/${nlData.name}.html`, res.data)
-  })
-})
-
-
-
-
+// ? write to file version
+// const fetchedDocPath = path.join(__dirname, "..", "/fetchedPages");
+// urlList.map((nlData) => {
+//   axios.get(nlData.url).then((res) => {
+//     fs.writeFileSync(`${fetchedDocPath}/${nlData.name}.html`, res.data)
+//   })
+// })
