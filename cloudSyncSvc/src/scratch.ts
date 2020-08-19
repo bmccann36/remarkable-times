@@ -13,14 +13,14 @@ dotenv.config();
   const client = new Remarkable({ deviceToken: process.env.DEVICE_TOKEN });
   await client.refreshToken();
 
-  const epubFileBuffer = fs.readFileSync(
-    path.join(__dirname, "..", "..", "8-16_NYT_newsletters.epub"),
-  );
+  // const epubFileBuffer = fs.readFileSync(
+  //   path.join(__dirname, "..", "..", "8-16_NYT_newsletters.epub"),
+  // );
 
-  await client.uploadEPUB("epubTStest", hashName("epubTStest"), epubFileBuffer, hashName('NYT briefings'));
+  // await client.uploadEPUB("epubTStest", hashName("epubTStest"), epubFileBuffer, hashName('NYT briefings'));
 
-  // const deleteRes = await client.deleteItem('37a02662-f288-508d-8fb8-f65f0cb13f72', 1);
-  // console.log(deleteRes);
+  const deleteRes = await client.deleteItem('128b0818-b566-505a-a537-abc4d78a6105', 1);
+  console.log(deleteRes);
 })();
 
 function hashName(inputStr: string) {
