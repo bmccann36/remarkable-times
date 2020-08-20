@@ -7,30 +7,31 @@ const path = require("path");
 const today = new Date();
 const dateStr = today.getMonth() + 1 + "-" + today.getDate();
 
-(async () => {
-  // fetch newsletters as array of html text strings
-  console.log("fetching newsletters");
-  const nlContentArray = await getNewsletterContent();
+module.exports = async function(){
+    // fetch newsletters as array of html text strings
+    console.log("fetching newsletters");
+    const nlContentArray = await getNewsletterContent();
+  
+    console.log("removing font formatting for e-pub optimization");
+    const cleanedNlItemArray = nlContentArray.map((item) => {
+      return {
+        newsLetterName: item.newsLetterName,
+        html: reformatNLHtml(item.html),
+      };
+    });
+  
+    console.log("generating epub zipfile");
+    // create the ePubZip
+    const zipFilePath = "/tmp/" +  dateStr + "_NYT_newsletters" + ".epub"
+  
+    await generateEpubZip(cleanedNlItemArray, zipFilePath);
+  
+    await sleep(2000)
+  
+    console.log("delivering eBook to remarkable cloud");
+    await deliverBook(dateStr + "_NYT_newsletters", zipFilePath);
+}
 
-  console.log("removing font formatting for e-pub optimization");
-  const cleanedNlItemArray = nlContentArray.map((item) => {
-    return {
-      newsLetterName: item.newsLetterName,
-      html: reformatNLHtml(item.html),
-    };
-  });
-
-  console.log("generating epub zipfile");
-  // create the ePubZip
-  const zipFilePath = "tmp/" +  dateStr + "_NYT_newsletters" + ".epub"
-
-  await generateEpubZip(cleanedNlItemArray, zipFilePath);
-
-  await sleep(2000)
-
-  console.log("delivering eBook to remarkable cloud");
-  await deliverBook(dateStr + "_NYT_newsletters", zipFilePath);
-})();
 
 function sleep(ms) {
   return new Promise((resolve) => {

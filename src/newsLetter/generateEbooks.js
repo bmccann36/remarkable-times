@@ -18,6 +18,7 @@ module.exports = function (newsArray, fullFilePath) {
    */
   const bookName = "NYT newsletters " + dateStr;
   const ebookOptions = {
+    tempDir: "/tmp",
     title: bookName,
     author: "The New York Times",
     cover: path.join(__dirname, "..", "..", "/staticFiles/nytImage.png"), // Url or File path, both ok.

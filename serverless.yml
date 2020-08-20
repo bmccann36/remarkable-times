@@ -26,5 +26,5 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: src/handler/newsLetterHandler
+  newsLetterHandler:
+    handler: src/handler/newsLetterHandler.main
