@@ -1,10 +1,11 @@
 [
   {
-    "name": "Morning-briefing",
-    "url": "https://static.nytimes.com/email-content/NN_sample.html"
-  },
-  {
     "name": "NYC-briefing", 
     "url": "https://static.nytimes.com/email-content/UR_sample.html"
+  },
+  {
+    "name": "Morning-briefing",
+    "url": "https://static.nytimes.com/email-content/NN_sample.html"
   }
+
 ]

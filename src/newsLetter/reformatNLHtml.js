@@ -1,12 +1,18 @@
 const cheerio = require("cheerio");
+const fs = require("fs");
 
 module.exports = function (newsLetterHtml) {
   // load data into cheerio parser
   const $ = cheerio.load(newsLetterHtml);
-  /**
-   * iterate over all table body elements
-   */
+
+  // remove div styling
+  $("div").each(function (i, el) {
+    $(el).attr("style", null);
+  });
+
   $("tbody").each(function (i, el) {
+    $(el).find("span").attr("style", null);
+
     const tdStyle = $(el).find("td").attr("style");
     // remove font size
     if (tdStyle) {
@@ -20,14 +26,10 @@ module.exports = function (newsLetterHtml) {
       // remove font size
       const newUlSpec = ulSpec.replace("font:10px georgia,serif;", "");
       $(el).find("ul").attr("style", newUlSpec);
-
-      const spanStyle = $(el).find("span").attr("style");
-      const newSpanStyle = spanStyle
-        .replace("font-size:17px;", "")
-        .replace("color:#dcdcdc;", "");
-      // console.log(newSpanStyle);
-      $(el).find("span").attr("style", newSpanStyle);
     }
   });
-  return $.html();
+  const emailContent = $('td[id="EMAIL_CONTAINER"]');
+  //? for when you want to write to file
+  // fs.writeFileSync("./nlHtml.html", emailContent.html());
+  return emailContent.html();
 };

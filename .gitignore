@@ -1,5 +1,8 @@
+# package directories
 node_modules
-.env
+jspm_packages
+
+# Serverless directories
+.serverless
 .DS_Store
-generatedEbooks/**
-fetchedPages/**
+.env

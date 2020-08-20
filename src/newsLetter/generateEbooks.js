@@ -20,7 +20,7 @@ module.exports = function (newsArray, fullFilePath) {
   const ebookOptions = {
     title: bookName,
     author: "The New York Times",
-    cover: path.join(__dirname, "..", "/staticFiles/nytImage.png"), // Url or File path, both ok.
+    cover: path.join(__dirname, "..", "..", "/staticFiles/nytImage.png"), // Url or File path, both ok.
     content: ebookContent,
   };
   /**

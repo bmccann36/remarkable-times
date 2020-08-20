@@ -19,7 +19,7 @@ dotenv.config();
 
   // await client.uploadEPUB("epubTStest", hashName("epubTStest"), epubFileBuffer, hashName('NYT briefings'));
 
-  const deleteRes = await client.deleteItem('128b0818-b566-505a-a537-abc4d78a6105', 1);
+  const deleteRes = await client.deleteItem('5158cdf2-5548-51ae-a72b-00594c147dc3', 1);
   console.log(deleteRes);
 })();
 

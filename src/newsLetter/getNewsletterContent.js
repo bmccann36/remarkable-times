@@ -1,7 +1,9 @@
 const fs = require("fs");
-const contentUrls = fs.readFileSync("./newsletterList.json", "utf8");
-const axios = require("axios").default;
 const path = require("path");
+const contentUrls = fs.readFileSync(
+  path.join(__dirname, "..", "..", "/newsletterList.json"),
+);
+const axios = require("axios").default;
 
 const urlList = JSON.parse(contentUrls);
 
