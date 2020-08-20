@@ -8,3 +8,4 @@ jspm_packages
 .env
 tmp/**
 src/scratch.js
+.env.development
