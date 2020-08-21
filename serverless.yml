@@ -14,3 +14,6 @@ provider:
 functions:
   newsLetterHandler:
     handler: src/handler/newsLetterHandler.main
+    events:
+      - schedule: cron(0 11 * * ? *)
+      

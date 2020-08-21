@@ -22,7 +22,7 @@ module.exports = async function(){
   
     console.log("generating epub zipfile");
     // create the ePubZip
-    const zipFilePath = process.env.TEMP_DIR_PATH +  dateStr + "_NYT_newsletters" + ".epub"
+    const zipFilePath = `${process.env.TEMP_DIR_PATH}/${dateStr}_NYT_newsletters.epub`;
   
     await generateEpubZip(cleanedNlItemArray, zipFilePath);
   
