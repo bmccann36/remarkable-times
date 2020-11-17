@@ -26,7 +26,7 @@ module.exports = async function(){
   
     await generateEpubZip(cleanedNlItemArray, zipFilePath);
   
-    await sleep(2000)
+    await sleep(2000) //? why is this here?
   
     console.log("delivering eBook to remarkable cloud");
     await deliverBook(dateStr + "_NYT_newsletters", zipFilePath);
